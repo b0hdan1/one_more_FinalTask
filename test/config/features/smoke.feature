@@ -1,73 +1,69 @@
 Feature: Smoke
 
-  Scenario: Check visibility of required fields for SignUp
+  Scenario Outline: Change currency on site
     Given I open 'https://www.phptravels.net' page
-    When I check 'SignUp' button visibility
-    Then I click 'SignUp' button
-    And I check 'First name' field is visible
-    And I check 'Last name' field is visible
-    And I check 'Phone' field is visible
-    And I check 'Email address' field is visible
-    And I check 'Password' field is visible
-    And I check 'Account type' field is visible
+    When I click to currency button
+    And I select '<currency>'
+    Then I check correct '<currency>' on site
+
+    Examples:
+      | currency |
+      | EUR      |
+
+  Scenario: Successful visa submit
+    Given I open https://www.phptravels.net/
+    When I click to 'visa' button
+    And I fill 'from country' field
+    And I fill 'to country' field
+    And I fill 'date' field
+    And I click 'submit' button
+    And I correctly fill all require field on page 'https://www.phptravels.net/visa/submit/bo/af/24-06-2022'
+    Then I check 'https://www.phptravels.net/success/visa' URL
 
   Scenario: Check successful SignUp
     Given I open https://www.phptravels.net/
-    When I click to "Signup button"
+    When I click to 'Signup' button
     And I correct fill all required fields
-    Then I saw a successful message
-
-  Scenario: Check visibility of required fields for LogIn
-    Given I open 'https://www.phptravels.net' page
-    When I check 'LogIn' button visibility
-    Then I click 'LogIn' button
-    And I check 'Email address' field is visible
-    And I check 'Password' field is visible
-    And I check checkbox 'Remember me' field is visible
+    Then I check a successful message
 
   Scenario: Check URL after successful LogIn
     Given I open https://www.phptravels.net/
-    When I click to "LogIn button"
+    When I click to 'LogIn button'
     And I correct fill all required fields
-    Then I saw 'https://www.phptravels.net/account/dashboard' URL
+    Then I check 'https://www.phptravels.net/account/dashboard' URL
 
   Scenario: Successful hotel booking
     Given I at 'https://www.phptravels.net/account/dashboard' page
-    When I check 'Hotels' button visibility
     And I click on 'Hotels' button
     And I select 'second' Hotel in page
-    And I check 'Book now' button visibility
     And I click 'Book now' button
-    And I check 'Term and Conditions' checkbox visibility
     And I click 'Term and Conditions' checkbox
-    And I check 'Confirm' button visibility
     And I click 'Confirm' button
     Then I check successful booking message
 
-  Scenario: Successful hotel booking
-    Given I at 'https://www.phptravels.net/account/dashboard' page
-    When I check 'Flights' button visibility
-    And I click to 'Flights' button
-    And I check 'One way' label visibility
-    And I click 'One way' label
-    And I check 'Economy' flight type visibility
-    And I select 'Economy' flight type
-    And I check 'Flying From' field visibility
-    And I fill 'Flying From' field
-    And I check 'To Destination' field visibility
-    And I fill 'To Destination' field
-    And I check 'Search' button visibility
-    And I click 'Search' button visibility
-    Then I check correct URL
+  Scenario: Check correct Hotels URL
+    Given I at 'https://www.phptravels.net/account/dashboard'
+    When I click on 'Hotels' button
+    Then I check https://www.phptravels.net/hotels URL
 
-    Scenario: Check correct Cars URL
-      Given I at 'https://www.phptravels.net/account/dashboard'
-      And I check 'Cars' button visibility
-      When I click on 'Cars' button
-      Then I Check correct URL
+  Scenario Outline: Successful Flights booking
+    Given I at 'https://www.phptravels.net/account/dashboard' page
+    When I click to 'Flights' button
+    And I click 'One way' label
+    And I select 'Economy' flight type
+    And I fill '<Flying From>' field
+    And I fill '<Destination>' field
+    And I fill '<Departure Date>' field
+    And  I select '<Passengers Count>' passenger
+    And I click 'Search' button
+    Then I check 'https://www.phptravels.net/flights/en/usd/dub/bud/oneway/economy/'<Departure Date>'/'<Passengers Count>' URL
+
+    Examples:
+      | Flying From   | Destination   | Departure Date| Passengers Count |
+      | Dublin        | Budapest      | 27-06-2022    | 1                |
 
   Scenario: Check correct Visa URL
     Given I at 'https://www.phptravels.net/account/dashboard'
     And I check 'Visa' button visibility
     When I click to 'Visa' button
-    Then I Check correct URL
+    Then I check 'https://www.phptravels.net/visa' URL
