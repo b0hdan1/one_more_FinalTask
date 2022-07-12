@@ -6,6 +6,8 @@ class HomePage extends Page {
   inputEmail = '//div[@class="form-group"]//input';
   inputPassword = '//div[@class="form-group mb-2"]//input';
   submitButton = 'button[type="submit"]';
+  homePageLocator = '//div[@class="logo"] //a[@class=" waves-effect"]';
+  visaButton = '//a[@class=" waves-effect"][contains(text(), "visa")]';
 
   get getCurrency() {
     return $(this.currency);
@@ -23,6 +25,14 @@ class HomePage extends Page {
     return $(this.submitButton);
   }
 
+  get getHomePageLocator() {
+    return $(this.homePageLocator)
+  }
+
+  get getVisaButton() {
+    return $(this.visaButton);
+  }
+
   async clickOnCurrencyButton() {
     return await $(this.currency).click();
   }
@@ -37,6 +47,14 @@ class HomePage extends Page {
     const currencyButton = `//button[contains(text(), "${currency}")]`;
 
     return expectChai($(currencyButton).isEqual(true));
+  }
+
+  async goToHomePage() {
+    return await this.getHomePageLocator.click();
+  }
+
+  async clickOnVisaButton() {
+    await this.getVisaButton.click();
   }
 
 }
